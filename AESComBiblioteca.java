@@ -24,7 +24,7 @@ public class AESComBiblioteca {
                 File file;
 
                 do {
-                    System.out.print("Entre o caminho do arquivo que quer cifrar: ");
+                    System.out.print("Entre o caminho do arquivo que quer cifrar (a partir do diretório atual): ");
                     String caminhoDoArquivo = System.getProperty("user.dir") + scanner.next();
                     file = new File(caminhoDoArquivo);
 
@@ -46,7 +46,7 @@ public class AESComBiblioteca {
                 String caminhoDoArquivoCifrado;
 
                 do {
-                    System.out.print("Onde guardar o arquivo cifrado? ");
+                    System.out.print("Onde guardar o arquivo cifrado (a partir do diretório atual)? ");
                     caminhoDoArquivoCifrado = System.getProperty("user.dir") + scanner.next();
                     path = Paths.get(caminhoDoArquivoCifrado);
 
@@ -63,7 +63,7 @@ public class AESComBiblioteca {
             } else if (opcao.equalsIgnoreCase("d")) {
                 File file;
                 do {
-                    System.out.print("Entre o caminho do arquivo que quer decifrar: ");
+                    System.out.print("Entre o caminho do arquivo que quer decifrar (a partir do diretório atual): ");
                     String caminhoDoArquivo = System.getProperty("user.dir") + scanner.next();
                     file = new File(caminhoDoArquivo);
 
@@ -80,7 +80,7 @@ public class AESComBiblioteca {
                 String caminhoDoArquivoDecifrado;
 
                 do {
-                    System.out.print("Onde guardar o arquivo decifrado? ");
+                    System.out.print("Onde guardar o arquivo decifrado (a partir do diretório atual)? ");
                     caminhoDoArquivoDecifrado = System.getProperty("user.dir") + scanner.next();
                     path = Paths.get(caminhoDoArquivoDecifrado);
 
