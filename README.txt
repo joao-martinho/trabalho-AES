@@ -1,19 +1,23 @@
 Nomes:
 
 Felipe Bona Regis Karmann
-Jo„o Martinho Schneider da Silva e Souza
+Jo√£o Martinho Schneider da Silva e Souza
 
-Ol·, professor. Antes de corrigir o trabalho, por favor atente-se aos seguintes pontos:
+Ol√°, professor. Antes de corrigir o trabalho, por favor atente-se aos seguintes pontos:
 
-1. O nosso programa È executado no modo de texto. Ele pede ao usu·rio que digite o caminho do arquivo
-a ser utilizado, a partir do diretÛrio atual. Por algum motivo, se o arquivo est· no mesmo diretÛrio
-que o AES.java, È necess·rio usar o caminho "./nome_do_arquivo.txt". Para outros diretÛrios, basta usar
+1. O nosso programa √© executado no modo de texto. Ele pede ao usu√°rio que digite o caminho do arquivo
+a ser utilizado, a partir do diret√≥rio atual. Por algum motivo, se o arquivo est√° no mesmo diret√≥rio
+que o AES.java, √© necess√°rio usar o caminho "./nome_do_arquivo.txt". Para outros diret√≥rios, basta usar
 "/nome_da_pasta/nome_do_arquivo.txt".
 
-2. O programa n„o È capaz de criar arquivos sozinho, sendo necess·rio que eles j· tenham sido criados
-antes da sua execuÁ„o. No entanto, as mudanÁas nos arquivos ficam escritas permanentemente no disco,
+2. O programa n√£o √© capaz de criar arquivos sozinho, sendo necess√°rio que eles j√° tenham sido criados
+antes da sua execu√ß√£o. No entanto, as mudan√ßas nos arquivos ficam escritas permanentemente no disco,
 como requisitado.
 
-3. O programa oferece ao usu·rio a possibilidade de gerar uma chave automaticamente. Ao optar por
-isto, o usu·rio precisa copiar a chave do output do programa e guard·-la no clipboard ou num arquivo
-se quiser us·-la para decifrar o mesmo arquivo.
+3. O programa oferece ao usu√°rio a possibilidade de gerar uma chave automaticamente. Ao optar por
+isto, o usu√°rio precisa copiar a chave do output do programa e guard√°-la no clipboard ou num arquivo
+se quiser us√°-la para decifrar o mesmo arquivo.
+
+4. Naturalmente, o arquivo do nosso trabalho √© o AES.java. O AESComBiblioteca n√≥s o usamos para testes.
+
+Obrigado.
