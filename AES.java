@@ -13,7 +13,6 @@ public class AES {
             (byte) 0x20, (byte) 0x40, (byte) 0x80, (byte) 0x1B, (byte) 0x36
     };
 
-
     private final static byte[][] SBOX = {
             { (byte) 0x63, (byte) 0x7C, (byte) 0x77, (byte) 0x7B, (byte) 0xF2, (byte) 0x6B, (byte) 0x6F, (byte) 0xC5, (byte) 0x30, (byte) 0x01, (byte) 0x67, (byte) 0x2B,
                     (byte) 0xFE, (byte) 0xD7, (byte) 0xAB, (byte) 0x76 },
@@ -162,7 +161,7 @@ public class AES {
     }
 
     private static byte[] cifrar(byte[] textoSimples, byte[] chave) {
-        int numBlocos = (textoSimples.length + 15) / 16;
+        int numBlocos = (textoSimples.length + 16) / 16;
         byte[] textoComPadding = adicionarPadding(textoSimples, numBlocos);
         byte[] resultadoFinal = new byte[numBlocos * 16];
         byte[][] matrizDeEstado = gerarMatrizDeEstado(chave);
@@ -181,7 +180,7 @@ public class AES {
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[0][j];
+                    temp[i][j] = roundKeys[i][j];
                 }
             }
 
@@ -203,7 +202,7 @@ public class AES {
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[10][j];
+                    temp[i][j] = roundKeys[40 + i][j];
                 }
             }
 
@@ -236,7 +235,7 @@ public class AES {
             byte[][] temp = new byte[4][4];
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[10][j];
+                    temp[i][j] = roundKeys[40 + i][j];
                 }
             }
 
@@ -259,7 +258,7 @@ public class AES {
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[0][j];
+                    temp[i][j] = roundKeys[i][j];
                 }
             }
 
@@ -314,7 +313,6 @@ public class AES {
         return novoEstado;
     }
 
-
     private static byte[][] inverterSubstituirPalavras(byte[][] estado) {
         byte[][] novoEstado = new byte[4][4];
 
@@ -323,7 +321,6 @@ public class AES {
                 byte valor = estado[i][j];
 
                 int indice = valor & 0xFF;
-
                 novoEstado[i][j] = SBOX_INVERTIDA[indice / 16][indice % 16];
             }
         }
@@ -419,7 +416,6 @@ public class AES {
         return (byte) (multiplicarPor02(b) ^ b);
     }
 
-
     public static byte[][] shiftRows(byte[][] estado) {
         byte[][] novoEstado = new byte[4][4];
 
@@ -455,7 +451,7 @@ public class AES {
         return novoEstado;
     }
 
-    private static byte[][] gerarMatrizDeEstado(byte[] chave) {
+    protected static byte[][] gerarMatrizDeEstado(byte[] chave) {
         byte[][] matrizDeEstado = new byte[4][4];
         int contador = 0;
 
@@ -510,10 +506,10 @@ public class AES {
     private static byte[][] rotacionarBytes(byte[][] palavra) {
         byte[][] temp = new byte[1][4];
 
-        palavra[0][0] = temp[0][0];
-        palavra[0][1] = temp[0][1];
-        palavra[0][2] = temp[0][2];
-        palavra[0][3] = temp[0][3];
+        temp[0][0] = palavra[0][0];
+        temp[0][1] = palavra[0][1];
+        temp[0][2] = palavra[0][2];
+        temp[0][3] = palavra[0][3];
 
         palavra[0][0] = temp[0][1];
         palavra[0][1] = temp[0][2];
@@ -592,12 +588,12 @@ public class AES {
 
     public static byte[] parseChave(String chave) {
         String[] stringArray = chave.split(",");
-
         byte[] bytes = new byte[stringArray.length];
 
         for (int i = 0; i < stringArray.length; i++) {
             bytes[i] = (byte) Integer.parseInt(stringArray[i]);
         }
+
         return bytes;
     }
 
