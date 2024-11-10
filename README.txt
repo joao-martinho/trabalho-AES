@@ -10,7 +10,7 @@ a ser utilizado, a partir do diretório atual. Por algum motivo, se o arquivo es
 que o AES.java, é necessário usar o caminho "./nome_do_arquivo.txt". Para outros diretórios, basta usar
 "/nome_da_pasta/nome_do_arquivo.txt".
 
-2. O programa é capaz de criar arquivos sozinho, mas não é capaz de criar novos diretórios, sendo necessário 
+2. O programa é capaz de criar arquivos sozinho, mas não de criar novos diretórios, sendo necessário 
 que estes já tenham sido criados antes da sua execução.
 
 3. O programa oferece ao usuário a possibilidade de gerar uma chave automaticamente. Ao optar por
