@@ -2,8 +2,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 public class AES {
@@ -607,56 +607,47 @@ public class AES {
         return resultado;
     }
 
-    private static byte[][] substituirPalavras(byte[][] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            for (int j = 0; j < bytes[0].length; j++) {
-                int hex = bytes[j][i];
-                bytes[j][i] = SBOX[hex / 16][hex % 16];
+    private static byte[][] substituirPalavras(byte[][] palavra) {
+        byte[][] resultado = new byte[palavra.length][4];
+
+        for (int i = 0; i < palavra.length; i++) {
+            for (int j = 0; j < 4; j++) {
+                int fileira = (palavra[i][j] & 0xF0) >> 4;
+                int coluna = (palavra[i][j] & 0x0F);
+                resultado[i][j] = SBOX[fileira][coluna];
             }
         }
 
-        return bytes;
+        return resultado;
     }
 
-    private static byte[][] inverterSubstituirPalavras(byte[][] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            for (int j = 0; j < bytes[0].length; j++) {
-                int hex = bytes[j][i];
-                bytes[j][i] = SBOX_INVERTIDA[hex / 16][hex % 16];
+    private static byte[][] inverterSubstituirPalavras(byte[][] estado) {
+        byte[][] novoEstado = new byte[4][4];
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                byte valor = estado[i][j];
+                int indice = valor & 0xFF;
+                novoEstado[i][j] = SBOX_INVERTIDA[indice / 16][indice % 16];
             }
         }
 
-        return bytes;
+        return novoEstado;
     }
 
-//    private static byte[][] substituirPalavra(byte[][] palavra) {
-//        byte[][] resultado = new byte[palavra.length][4];
-//
-//        for (int i = 0; i < palavra.length; i++) {
-//            for (int j = 0; j < 4; j++) {
-//                int fileira = (palavra[i][j] & 0xF0) >> 4;
-//                int coluna = (palavra[i][j] & 0x0F);
-//                resultado[i][j] = SBOX[fileira][coluna];
-//            }
-//        }
-//
-//        return resultado;
-//    }
-//
-//    private static byte[][] inverterSubstituirPalavras(byte[][] estado) {
-//        byte[][] novoEstado = new byte[4][4];
-//
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 4; j++) {
-//                byte valor = estado[i][j];
-//
-//                int indice = valor & 0xFF;
-//                novoEstado[i][j] = SBOX_INVERTIDA[indice / 16][indice % 16];
-//            }
-//        }
-//
-//        return novoEstado;
-//    }
+    private static byte[][] substituirPalavra(byte[][] palavra) {
+        byte[][] resultado = new byte[palavra.length][4];
+
+        for (int i = 0; i < palavra.length; i++) {
+            for (int j = 0; j < 4; j++) {
+                int fileira = (palavra[i][j] & 0xF0) >> 4;
+                int coluna = (palavra[i][j] & 0x0F);
+                resultado[i][j] = SBOX[fileira][coluna];
+            }
+        }
+
+        return resultado;
+    }
 
     public static byte[] parseChave(String chave) {
         String[] stringArray = chave.split(",");
@@ -670,9 +661,10 @@ public class AES {
     }
 
     private static String gerarChaveAleatoria() {
-        SecureRandom secureRandom = new SecureRandom();
+        Random random = new Random();
         byte[] chave = new byte[16];
-        secureRandom.nextBytes(chave);
+        random.nextBytes(chave);
+
         StringBuilder chaveFormatada = new StringBuilder();
 
         for (int i = 0; i < chave.length; i++) {
