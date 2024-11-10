@@ -101,7 +101,7 @@ public class AES {
                     path = Paths.get(caminhoDoArquivoCifrado);
 
                     if (!Files.exists(path)) {
-                        System.out.println("ERRO: caminho não encontrado.");
+                        Files.createFile(path);
                     }
 
                 } while (!Files.exists(path));
@@ -135,7 +135,7 @@ public class AES {
                     path = Paths.get(caminhoDoArquivoDecifrado);
 
                     if (!Files.exists(path)) {
-                        System.out.println("ERRO: caminho não encontrado.");
+                        Files.createFile(path);
                     }
 
                 } while (!Files.exists(path));
