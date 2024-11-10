@@ -160,10 +160,23 @@ public class AES {
         byte[] resultadoFinal = new byte[numBlocos * 16];
         byte[][] matrizDeEstado = gerarMatrizDeEstado(chave);
         byte[][] roundKeys = expandirChave(matrizDeEstado);
+        byte[][] primeiraRoundKey = new byte[4][4];
+        byte[][] ultimaRoundKey = new byte[4][4];
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                primeiraRoundKey[i][j] = roundKeys[i][j];
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                ultimaRoundKey[i][j] = roundKeys[40 + i][j];
+            }
+        }
 
         for (int blocoIdx = 0; blocoIdx < numBlocos; blocoIdx++) {
             byte[] bloco = Arrays.copyOfRange(textoSimples, blocoIdx * 16, (blocoIdx + 1) * 16);
-
             byte[][] temp = new byte[4][4];
             byte[][] estado = new byte[4][4];
 
@@ -177,37 +190,26 @@ public class AES {
                 estado = adicionarPadding(estado);
             }
 
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[i][j];
-                }
-            }
+            estado = addRoundKey(estado, primeiraRoundKey);
 
-            estado = addRoundKey(estado, temp);
+            for (int i = 1; i <= 10; i++) {
+                    estado = substituirPalavras(estado);
+                    estado = shiftRows(estado);
+                    estado = mixColumns(estado);
 
-            for (int i = 1; i < 10; i++) {
-                estado = substituirPalavras(estado);
-                estado = shiftRows(estado);
-                estado = mixColumns(estado);
-
-                for (int j = 0; j < 4; j++) {
-                    for (int k = 0; k < 4; k++) {
-                        temp[j][k] = roundKeys[i * 4 + j][k];
+                    for (int j = 0; j < 4; j++) {
+                        for (int k = 0; k < 4; k++) {
+                            temp[j][k] = roundKeys[i * 4 + j][k];
+                        }
                     }
-                }
 
-                estado = addRoundKey(estado, temp);
-            }
-
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[40 + i][j];
-                }
+                    estado = addRoundKey(estado, temp);
             }
 
             estado = substituirPalavras(estado);
             estado = shiftRows(estado);
-            estado = addRoundKey(estado, temp);
+            estado = addRoundKey(estado, ultimaRoundKey);
+
             byte[] blocoCifrado = flattenByteMatrix(estado);
             System.arraycopy(blocoCifrado, 0, resultadoFinal, blocoIdx * 16, 16);
         }
@@ -220,10 +222,25 @@ public class AES {
         byte[] resultadoFinal = new byte[textoCifrado.length];
         byte[][] matrizDeEstado = gerarMatrizDeEstado(chave);
         byte[][] roundKeys = expandirChave(matrizDeEstado);
+        byte[][] primeiraRoundKey = new byte[4][4];
+        byte[][] ultimaRoundKey = new byte[4][4];
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                primeiraRoundKey[i][j] = roundKeys[i][j];
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                ultimaRoundKey[i][j] = roundKeys[40 + i][j];
+            }
+        }
 
         for (int blocoIdx = 0; blocoIdx < numBlocos; blocoIdx++) {
             byte[] bloco = Arrays.copyOfRange(textoCifrado, blocoIdx * 16, (blocoIdx + 1) * 16);
             byte[][] estado = new byte[4][4];
+            byte[][] temp = new byte[4][4];
 
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 4; j++) {
@@ -231,18 +248,12 @@ public class AES {
                 }
             }
 
-            byte[][] temp = new byte[4][4];
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[40 + i][j];
-                }
-            }
+            estado = addRoundKey(estado, ultimaRoundKey);
 
-            estado = addRoundKey(estado, temp);
-            estado = inverterShiftRows(estado);
-            estado = inverterSubstituirPalavras(estado);
+            for (int i = 10; i >= 1; i--) {
+                estado = inverterShiftRows(estado);
+                estado = inverterSubstituirPalavras(estado);
 
-            for (int i = 9; i > 0; i--) {
                 for (int j = 0; j < 4; j++) {
                     for (int k = 0; k < 4; k++) {
                         temp[j][k] = roundKeys[i * 4 + j][k];
@@ -251,17 +262,11 @@ public class AES {
 
                 estado = addRoundKey(estado, temp);
                 estado = inverterMixColumns(estado);
-                estado = inverterShiftRows(estado);
-                estado = inverterSubstituirPalavras(estado);
             }
 
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    temp[i][j] = roundKeys[i][j];
-                }
-            }
-
-            estado = addRoundKey(estado, temp);
+            estado = inverterShiftRows(estado);
+            estado = inverterSubstituirPalavras(estado);
+            estado = addRoundKey(estado, primeiraRoundKey);
 
             if (blocoIdx == numBlocos - 1) {
                 estado = removerPadding(estado);
@@ -321,7 +326,7 @@ public class AES {
         return bloco;
     }
 
-    public static byte[][] inverterShiftRows(byte[][] estado) {
+    public static byte[][]  inverterShiftRows(byte[][] estado) {
         byte[][] novoEstado = new byte[4][4];
 
         novoEstado[0] = estado[0].clone();
