@@ -15,7 +15,7 @@ Olá, professor. Antes de corrigir o trabalho, por favor atente-se aos seguintes
 
 4. O programa é capaz de criar arquivos sozinho, mas não de criar novos diretórios, sendo necessário que estes já tenham sido criados antes da sua execução.
 
-5. O programa oferece ao usuário a possibilidade de gerar uma chave automaticamente. Ao optar por isto, o usuário precisa copiar a chave do output do programa e guardá-la no clipboard ou num arquivo se quiser usá-la para decifrar o mesmo arquivo. O método gerarChaveAleatoria() usava a biblioteca security.SecureRandom, mas trocamos pela util.Random por acharmos que talvez isso descumpre o requisito de não usar bibliotecas de criptografia.
+5. O programa oferece ao usuário a possibilidade de gerar uma chave automaticamente. Ao optar por isto, o usuário precisa copiar a chave do output do programa e guardá-la no clipboard ou num arquivo se quiser usá-la para decifrar o mesmo arquivo. O método gerarChaveAleatoria() usava a biblioteca security.SecureRandom, mas trocamos pela util.Random por acharmos que talvez isso descumpra o requisito de não usar bibliotecas de criptografia.
 
 -----
 
